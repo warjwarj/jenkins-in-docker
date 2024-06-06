@@ -4,3 +4,6 @@ Running jenkins in a docker container is useful. Being able to run docker contai
 
 docker-compose up --build -d<br>
 ^ run this to run the compose file - rebuild and overwrite any previous compose stacks.
+
+
+https://github.com/Douglas0n/jenkins-docker/tree/master
