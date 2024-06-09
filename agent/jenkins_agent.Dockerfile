@@ -1,14 +1,13 @@
-FROM jenkins/ssh-agent:jdk11 AS base
+FROM jenkins/ssh-agent:alpine-jdk17 AS base
 
 USER root
 
 RUN uname -a && cat /etc/*release
 
+# expose for the contoller to access the agent
 EXPOSE 22
 
-# Based on instructiions at https://learn.microsoft.com/en-us/dotnet/core/linux-prerequisites?tabs=netcore2x
-# Install depency for dotnet core 2.
-RUN apt-get update && apt-get install -y gpg && apt-get install -y --no-install-recommends curl libunwind8 gettext apt-transport-https && curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > microsoft.gpg && mv microsoft.gpg /etc/apt/trusted.gpg.d/microsoft.gpg && sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main" > /etc/apt/sources.list.d/dotnetdev.list' && apt-get update
+RUN apk update && apk add dotnet6-sdk
 
-# Install the .Net Core framework, set the path, and show the version of core installed.
-RUN apt-get install -y dotnet-runtime-6.0.0 && export PATH=$PATH:$HOME/dotnet && dotnet --version
+# for debian, not needed as we're on alpine
+#RUN wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb && dpkg -i packages-microsoft-prod.deb && rm packages-microsoft-prod.deb && apt-get update && apt-get install -y dotnet-sdk-8.0 && export PATH=$PATH:$HOME/dotnet && dotnet --version
