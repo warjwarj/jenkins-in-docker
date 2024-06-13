@@ -20,4 +20,4 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/d
 
 # if we aren't mounting the host's docker binary to the container we need to install it directly into the container.
 # for some reaosn mounting doesn't work. tried chmoding and chowning. Could try again.
-RUN apt-get update && apt-get install -y docker-ce-cli
+# RUN apt-get update && apt-get install -y docker-ce-cli

@@ -1,18 +1,17 @@
+# build on jenkins agent image
 FROM jenkins/ssh-agent:alpine-jdk17 AS base
 
 # schloogie
 USER root
 
-# bloogie
-RUN uname -a && cat /etc/*release
-
 # expose for the contoller to access the agent
 EXPOSE 22
 
-RUN apk update && apk add wget
+# packages we need
+RUN apk update && apk add wget && apk add libstdc++ && apk add libgcc && apk add icu-libs && apk add xmlstarlet
 
-# get the install script, change file perms, get deps
-RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh && chmod +x ./dotnet-install.sh && apk add libstdc++ && apk add libgcc
+# get the install script, change file perms
+RUN wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh && chmod +x ./dotnet-install.sh
 
 # run install script
 RUN ./dotnet-install.sh --channel 8.0 --install-dir /opt/.dotnet
